@@ -2,20 +2,100 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Bar Chart Visualization of Data</title>
+  <!-- Assign title element with title id (step 1) -->
+  <title id="title">Bar Chart Visualization of Data</title>
   <!-- FreeCodeCamp specification test suite start -->
   <script src="https://gitcdn.link/repo/freeCodeCamp/testable-projects-fcc/master/build/bundle.js"></script>
   <!-- FreeCodeCamp specification test suite end -->
-  
+
   <!-- D3 Add start-->
-  <script src="d3.min.js"></script>
+  <script src="js/d3.min.js"></script>
+  <script src="https://d3js.org/d3-axis.v1.min.js"></script>
   <!-- D3 Add End -->
 
-  <script src="barChartVis.js"></script>
+  <script src="js/barChartVis.js"></script>
   <link type="text/css" rel="stylesheet" href="barChartVis.css">
 </head>
-<body>
-  <h1>Hello World</h1>
-  <p id="hi">not working</p>
-</body>
+  <body>
+    <script>
+      // Rendering bar chart with D3.js
+      function renderGraph() {
+        //NOTED
+        // Setting up the graph SVG with variables that are easily changed
+        const yMargin = 40;
+        const width = 800;
+        const height = 400;
+        const barWidth = width / 275;
+
+        // Using D3.js to pull max values for year and GDP of Fed Reserve data
+        const minGDP = d3.min(simpleGDPData);
+        const maxGDP = d3.max(simpleGDPData);
+        const minYear = d3.min(json.data, (d) => d[0].slice(0, 4));
+        const maxYear = d3.max(json.data, (d) => d[0].slice(0, 4));
+
+        //noted
+        const svg = d3.select("body")
+                      .append("svg")
+                      .attr("width", width + 100)
+                      .attr("height", height + 60);
+
+        //noted
+        const xScale = d3.scaleLinear()
+                        .domain([minYear, maxYear])
+                        .range([0, width]);
+        //noted
+        const linearScale = d3.scaleLinear()
+                              .domain([minGDP, maxGDP])
+                              .range([(minGDP / maxGDP) * height, height]);
+
+        //noted
+        const scaledGDP = simpleGDPData.map(function(item) {
+          return linearScale(item);
+        })
+
+        //noted
+        const yAxisScale = d3.scaleLinear()
+                             .domain([minGDP, maxGDP])
+                             .range([height, (minGDP / maxGDP) * height]);
+
+        //noted
+        const yAxis = d3.axisLeft(yAxisScale);
+        //noted
+        const yAxisGroup = svg.append("g")
+                              .call(yAxis)
+                              .attr("id", "y-axis")
+                              .attr("transform", "translate(60, 0)");
+
+        
+        d3.select("svg").selectAll("rect") //
+           .data(scaledGDP) // 
+           .enter() //
+           .append("rect") //
+           .attr("x", function(d, i) {
+             return i * barWidth;
+           })//
+           .attr("y", (d, i) => {
+             return height - d;
+           })
+           .attr("width", barWidth)
+           .attr("height", function(d) {
+             return d;
+           })//
+           .attr("class", "bar") //
+           .attr("transform", "translate(60, 0)")
+           .append("title")
+           .text((d) => `${d}`);
+
+        //noted
+        const xAxis = d3.axisBottom()
+                        .scale(xScale)
+                        .tickFormat(d3.format("d"));
+       //noted
+       const xAxisGroup = svg.append("g")
+                             .call(xAxis)
+                             .attr("id", "x-axis")
+                             .attr("transform", "translate(60, 400)");
+      }
+    </script>
+  </body>
 </html>
