@@ -75,10 +75,10 @@ function renderGraph() {
                   .style("opacity", 0);
 
   d3.select("svg")
-    .selectAll("rect") //
-    .data(scaledGDP) // 
-    .enter() //
-    .append("rect") //
+    .selectAll("rect")
+    .data(scaledGDP)
+    .enter()
+    .append("rect")
     .attr("x", (d, i) => i * barWidth)
     .attr("y", (d, i) => height - d)
     .attr("width", barWidth)
@@ -87,25 +87,7 @@ function renderGraph() {
     .attr("data-date", (d, i) => json.data[i][0])
     .attr("data-gdp", (d, i) => json.data[i][1])
     .attr("class", "bar")
-    // .attr("id", "tooltip")
-    .on('mouseover', function(d, i) {
-      overlay.transition()
-        .duration(0)
-        .style('height', d + 'px')
-        .style('width', barWidth + 'px')
-        .style('opacity', .9)
-        .style('left', (i * barWidth) + 0 + 'px')
-        .style('top', height - d + 'px')
-        .style('transform', 'translateX(60px)');
-      tooltip.transition()
-        .duration(200)
-        .style('opacity', .9);
-      tooltip.html(json.data[i][0].slice(0, 4) + '<br>' + '$' + simpleGDPData[i].toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + ' Billion')
-        .attr('data-date', json.data[i][0])
-        .style('left', (i * barWidth) + 30 + 'px')
-        .style('top', height - 100 + 'px')
-        .style('transform', 'translateX(60px)');
-    })
+    .attr("id", "tooltip")
 
   //noted
   const xAxis = d3.axisBottom()
