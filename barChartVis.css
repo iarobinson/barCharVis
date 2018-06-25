@@ -1,29 +1,33 @@
 html {
   font-family: sans-serif;
+  font-size: 1em;
 }
 
-svg {
-  background-color: pink;
+body {
+  /* max-width: 40em; */
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
-text {
-  font-size: 10px;
+#title {
+  font-size: 4em;
 }
 
-.bar:hover {
-  fill: green;
+#tooltip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  text-align: center;
+  padding: 2px;
+  font: 12px;
+  background: lightsteelblue;
+  box-shadow: 1px 1px 10px;
+  border-radius: 2px;
+  /* pointer-events: none; */
 }
 
-/* .bar {
-  width: 25px;
-  height: 100px;
-  display: inline-block;
-  background-color: blue;
-} */
-
-/* .graph {
-  width: 100%;
-  height: 100%;
-  opacity: .6;
-  background-color: green;
-} */
+#tooltip:hover{ 
+  fill: red;
+}
